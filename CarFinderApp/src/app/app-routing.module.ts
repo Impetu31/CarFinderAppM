@@ -24,13 +24,13 @@ const routes: Routes = [
     loadChildren: () => import('./pages/post-and-search/post-and-search.module').then(m => m.PostAndSearchPageModule)
   },
   {
+    path: 'perfil',
+    loadChildren: () => import('./pages/perfil/perfil.module').then( m => m.PerfilPageModule)
+  },
+  {
     path: '**',
     redirectTo: 'main', // Si la ruta no existe, redirige a la página principal
     pathMatch: 'full'
-  },
-  {
-    path: 'perfil',
-    loadChildren: () => import('./pages/perfil/perfil.module').then( m => m.PerfilPageModule)
   }
 ];
 

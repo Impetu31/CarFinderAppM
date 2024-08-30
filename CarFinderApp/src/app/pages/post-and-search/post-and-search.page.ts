@@ -59,11 +59,43 @@ export class PostAndSearchPage {
       console.log(`Enviando reporte para auto ${this.patente} desde ${this.direccion}`);
       
       let reportados = JSON.parse(localStorage.getItem('reportados') || '[]');
-      reportados = reportados.filter((auto: any) => auto.patente !== this.patente);
+      const autoIndex = reportados.findIndex((auto: any) => auto.patente === this.patente);
       
-      localStorage.setItem('reportados', JSON.stringify(reportados));
-      
-      alert('Auto marcado como encontrado y eliminado de la lista de robados.');
+      if (autoIndex !== -1) {
+        const auto = reportados[autoIndex];
+        
+        // Asegurarse de que la estructura de notificaciones esté bien formada
+        let notificaciones = JSON.parse(localStorage.getItem('notificaciones') || '[]');
+        let usuarioNotificaciones = notificaciones.find((noti: any) => noti.userEmail === auto.userEmail);
+
+        // Si no existe una notificación para este usuario, se crea
+        if (!usuarioNotificaciones) {
+          usuarioNotificaciones = {
+            userEmail: auto.userEmail,
+            mensajes: [] // Se inicializa un array vacío para mensajes
+          };
+          notificaciones.push(usuarioNotificaciones);
+        }
+
+        // Asegurarse de que 'mensajes' es un array antes de usar 'push'
+        if (!Array.isArray(usuarioNotificaciones.mensajes)) {
+          usuarioNotificaciones.mensajes = [];
+        }
+
+        // Se añade el nuevo mensaje a la lista de mensajes del usuario
+        usuarioNotificaciones.mensajes.push({
+          mensaje: `El auto con patente ${this.patente} fue visto en ${this.direccion}.`,
+          foto: this.foto ? this.foto.name : null
+        });
+
+        localStorage.setItem('notificaciones', JSON.stringify(notificaciones));
+
+        // Remover el auto de la lista de robados
+        reportados = reportados.filter((auto: any) => auto.patente !== this.patente);
+        localStorage.setItem('reportados', JSON.stringify(reportados));
+
+        alert('Reporte enviado con éxito. El usuario que reportó el auto robado ha sido notificado con la información proporcionada.');
+      }
     } else {
       alert('Por favor, ingresa la dirección.');
     }
@@ -88,7 +120,7 @@ export class PostAndSearchPage {
         descripcion: this.descripcion,
         direccion: '',
         foto: this.foto.name,
-        userEmail: this.loggedInUser.email
+        userEmail: this.loggedInUser.email // Asociar reporte con usuario logueado
       });
       
       localStorage.setItem('reportados', JSON.stringify(reportados));

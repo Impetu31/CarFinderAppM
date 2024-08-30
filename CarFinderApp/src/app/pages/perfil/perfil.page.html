@@ -19,6 +19,19 @@
       <ion-label>Notificaciones</ion-label>
     </ion-list-header>
 
+    <ion-item *ngFor="let notificacion of notificaciones">
+      <ion-label>
+        <h2>{{ notificacion.mensaje }}</h2>
+        <p *ngIf="notificacion.foto">Foto: {{ notificacion.foto }}</p>
+      </ion-label>
+    </ion-item>
+  </ion-list>
+
+  <ion-list>
+    <ion-list-header>
+      <ion-label>Reportes</ion-label>
+    </ion-list-header>
+
     <ion-item *ngFor="let reporte of reportes">
       <ion-label>
         <h2>Auto Reportado: {{ reporte.patente }}</h2>
