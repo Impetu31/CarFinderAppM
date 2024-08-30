@@ -17,8 +17,10 @@ export class LoginPage {
     const user = users.find((u: any) => u.email === this.email && u.password === this.password);
 
     if (user) {
-      // Redirigir al dashboard (home)
-      this.router.navigate(['/home']);
+      // Guardar el usuario conectado
+      localStorage.setItem('loggedInUser', JSON.stringify(user));
+      // Redirigir a la página de post-and-search
+      this.router.navigate(['/post-and-search']);
     } else {
       alert("Correo o contraseña incorrectos.");
     }

@@ -7,6 +7,7 @@ import { Router } from '@angular/router';
   styleUrls: ['./registro.page.scss'],
 })
 export class RegistroPage {
+  username: string = '';
   email: string = '';
   password: string = '';
   confirmPassword: string = '';
@@ -21,11 +22,10 @@ export class RegistroPage {
 
     // Guardar usuario en Local Storage
     const users = JSON.parse(localStorage.getItem('users') || '[]');
-    users.push({ email: this.email, password: this.password });
+    users.push({ username: this.username, email: this.email, password: this.password });
     localStorage.setItem('users', JSON.stringify(users));
 
     // Redirigir a la página de inicio de sesión
     this.router.navigate(['/login']);
   }
 }
-

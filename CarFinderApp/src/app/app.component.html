@@ -1,3 +1,22 @@
 <ion-app>
+  <ion-header *ngIf="showHeader">
+    <ion-toolbar>
+      <ion-title>Encuentra tu Auto</ion-title>
+      <ion-buttons slot="end">
+        <ion-button *ngIf="loggedInUser" routerLink="/perfil">
+          Bienvenido, {{ loggedInUser.username }}
+        </ion-button>
+        <ion-button *ngIf="loggedInUser" (click)="logout()">
+          Cerrar Sesión
+        </ion-button>
+        <ion-button *ngIf="!loggedInUser" routerLink="/login">
+          Iniciar Sesión
+        </ion-button>
+        <ion-button *ngIf="!loggedInUser" routerLink="/registro">
+          Registrarse
+        </ion-button>
+      </ion-buttons>
+    </ion-toolbar>
+  </ion-header>
   <ion-router-outlet></ion-router-outlet>
 </ion-app>
