@@ -1,0 +1,31 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-title>Perfil</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content class="ion-padding">
+  <ion-card>
+    <ion-card-header>
+      <ion-card-title>Bienvenido, {{ user.email }}</ion-card-title>
+    </ion-card-header>
+    <ion-card-content>
+      <p>Aquí puedes ver tus reportes y recibir notificaciones si se encuentran tus autos reportados.</p>
+    </ion-card-content>
+  </ion-card>
+
+  <ion-list>
+    <ion-list-header>
+      <ion-label>Notificaciones</ion-label>
+    </ion-list-header>
+
+    <ion-item *ngFor="let reporte of reportes">
+      <ion-label>
+        <h2>Auto Reportado: {{ reporte.patente }}</h2>
+        <p *ngIf="reporte.direccion">Visto en: {{ reporte.direccion }}</p>
+        <p *ngIf="reporte.foto">Foto subida: {{ reporte.foto }}</p>
+        <p *ngIf="!reporte.direccion && !reporte.foto">Aún no se ha encontrado.</p>
+      </ion-label>
+    </ion-item>
+  </ion-list>
+</ion-content>
