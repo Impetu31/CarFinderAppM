@@ -19,26 +19,32 @@
       <ion-label>Notificaciones</ion-label>
     </ion-list-header>
 
-    <ion-item *ngFor="let notificacion of notificaciones">
-      <ion-label>
-        <h2>{{ notificacion.mensaje }}</h2>
-        <p *ngIf="notificacion.foto">Foto: {{ notificacion.foto }}</p>
-      </ion-label>
-    </ion-item>
-  </ion-list>
-
-  <ion-list>
-    <ion-list-header>
-      <ion-label>Reportes</ion-label>
-    </ion-list-header>
-
     <ion-item *ngFor="let reporte of reportes">
       <ion-label>
         <h2>Auto Reportado: {{ reporte.patente }}</h2>
+        <p>Descripción: {{ reporte.descripcion }}</p>
         <p *ngIf="reporte.direccion">Visto en: {{ reporte.direccion }}</p>
-        <p *ngIf="reporte.foto">Foto subida: {{ reporte.foto }}</p>
-        <p *ngIf="!reporte.direccion && !reporte.foto">Aún no se ha encontrado.</p>
+        <p *ngIf="reporte.foto">Foto: {{ reporte.foto }}</p>
+        <p *ngIf="reporte.status === 'Robado'">Estado: Robado</p>
+        <p *ngIf="reporte.status === 'Recuperado'">Estado: Recuperado</p>
       </ion-label>
+
+      <ion-list *ngIf="obtenerNotificaciones(reporte).length > 0">
+        <ion-list-header>
+          <ion-label>Notificaciones Recibidas</ion-label>
+        </ion-list-header>
+        <ion-item *ngFor="let notificacion of obtenerNotificaciones(reporte)">
+          <ion-label>
+            <h3>{{ notificacion.mensaje }}</h3>
+            <p>Visto en: {{ notificacion.direccion }}</p>
+            <p *ngIf="notificacion.foto">Foto: {{ notificacion.foto }}</p>
+          </ion-label>
+        </ion-item>
+      </ion-list>
+
+      <ion-button *ngIf="reporte.status === 'Robado'" (click)="marcarRecuperado(reporte.id)">
+        Marcar como Recuperado
+      </ion-button>
     </ion-item>
   </ion-list>
 </ion-content>
