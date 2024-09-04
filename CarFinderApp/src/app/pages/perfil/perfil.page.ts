@@ -15,16 +15,21 @@ export class PerfilPage implements OnInit {
 
   ngOnInit() {
     this.user = JSON.parse(localStorage.getItem('loggedInUser') || '{}');
-    this.reportes = this.productService.getAll().filter(product => product.userEmail === this.user.email);
+    this.reportes = this.productService.getProductsByUser(this.user.email);
   }
 
   marcarRecuperado(productId: number) {
     this.productService.marcarRecuperado(productId);
     alert('Auto marcado como recuperado.');
-    this.reportes = this.productService.getAll().filter(product => product.userEmail === this.user.email);
+    this.reportes = this.productService.getProductsByUser(this.user.email);
   }
 
   obtenerNotificaciones(product: Product): Notificacion[] {
     return product.notificaciones || [];
+  }
+
+  borrarAutosYNotificaciones() {
+    this.productService.borrarAutosYNotificaciones();
+    this.reportes = []; // Limpiar la lista de reportes en la vista
   }
 }

@@ -1,64 +1,59 @@
 import { Injectable } from '@angular/core';
-import { Product, Notificacion } from '../models/product.model';
+import { Product, Notificacion } from 'src/models/product.model';
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
 export class ProductService {
   private products: Product[] = [];
-  private idCounter = 1;
-  private notifCounter = 1;
 
   constructor() {
-    this.loadProducts();
-  }
-
-  private loadProducts() {
-    const storedProducts = JSON.parse(localStorage.getItem('products') || '[]');
-    this.products = storedProducts;
-  }
-
-  private saveProducts() {
-    localStorage.setItem('products', JSON.stringify(this.products));
+    // Cargar los productos desde el local storage al iniciar el servicio
+    this.products = JSON.parse(localStorage.getItem('products') || '[]');
   }
 
   getAll(): Product[] {
     return this.products;
   }
 
-  getById(id: number): Product | undefined {
-    return this.products.find(product => product.id === id);
+  getProductsByUser(userEmail: string): Product[] {
+    return this.products.filter(product => product.userEmail === userEmail);
   }
 
   add(product: Product) {
-    product.id = this.idCounter++;
+    product.id = this.products.length + 1;
     this.products.push(product);
-    this.saveProducts();
-  }
-
-  update(id: number, updatedProduct: Partial<Product>) {
-    const product = this.getById(id);
-    if (product) {
-      Object.assign(product, updatedProduct);
-      this.saveProducts();
-    }
+    this.saveToLocalStorage();
   }
 
   addNotificacion(productId: number, notificacion: Notificacion) {
-    const product = this.getById(productId);
+    const product = this.products.find((p) => p.id === productId);
     if (product) {
-      notificacion.id = this.notifCounter++;
-      product.notificaciones = product.notificaciones || [];
+      notificacion.id = (product.notificaciones?.length || 0) + 1;
+      if (!product.notificaciones) {
+        product.notificaciones = [];
+      }
       product.notificaciones.push(notificacion);
-      this.saveProducts();
+      this.saveToLocalStorage();
     }
   }
 
   marcarRecuperado(productId: number) {
-    const product = this.getById(productId);
+    const product = this.products.find((p) => p.id === productId);
     if (product) {
       product.status = 'Recuperado';
-      this.saveProducts();
+      this.saveToLocalStorage();
     }
+  }
+
+  borrarAutosYNotificaciones() {
+    localStorage.removeItem('products'); // Borra solo los autos reportados y notificaciones
+    this.products = []; // Limpia la lista local
+    this.saveToLocalStorage();
+    alert('Los autos reportados y notificaciones han sido borrados.');
+  }
+
+  private saveToLocalStorage() {
+    localStorage.setItem('products', JSON.stringify(this.products));
   }
 }

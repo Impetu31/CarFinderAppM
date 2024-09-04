@@ -1,7 +1,7 @@
 import { Component } from '@angular/core';
 import { Router } from '@angular/router';
-import { ProductService } from 'src/services/product.service'; // Ruta ajustada
-import { Product, Notificacion } from 'src/models/product.model'; // Ruta ajustada
+import { ProductService } from 'src/services/product.service'; 
+import { Product, Notificacion } from 'src/models/product.model';
 
 @Component({
   selector: 'app-post-and-search',
@@ -55,7 +55,6 @@ export class PostAndSearchPage {
       alert('Por favor, ingresa la dirección.');
     }
   }
-  
 
   reportarAuto() {
     const newProduct: Product = {

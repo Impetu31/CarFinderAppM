@@ -5,46 +5,49 @@
 </ion-header>
 
 <ion-content class="ion-padding">
-  <ion-card>
+  <!-- Mensaje de bienvenida cuando no hay autos reportados -->
+  <ion-card *ngIf="reportes.length === 0">
     <ion-card-header>
-      <ion-card-title>Bienvenido, {{ user.email }}</ion-card-title>
+      <ion-card-title>¡Bienvenido, {{ user.email }}!</ion-card-title>
     </ion-card-header>
     <ion-card-content>
-      <p>Aquí puedes ver tus reportes y recibir notificaciones si se encuentran tus autos reportados.</p>
+      <p>No tienes autos reportados aún. Comienza a reportar un auto robado si lo necesitas.</p>
     </ion-card-content>
   </ion-card>
 
-  <ion-list>
-    <ion-list-header>
-      <ion-label>Notificaciones</ion-label>
-    </ion-list-header>
+  <!-- Mostrar autos reportados y notificaciones -->
+  <ion-card *ngFor="let reporte of reportes">
+    <ion-card-header>
+      <ion-card-title>Auto Reportado: {{ reporte.patente }}</ion-card-title>
+    </ion-card-header>
+    <ion-card-content>
+      <p>Descripción: {{ reporte.descripcion }}</p>
+      <p *ngIf="reporte.direccion">Visto en: {{ reporte.direccion }}</p>
+      <p *ngIf="reporte.foto">Foto: {{ reporte.foto }}</p>
+      <p *ngIf="reporte.status === 'Robado'">Estado: Robado</p>
+      <p *ngIf="reporte.status === 'Recuperado'">Estado: Recuperado</p>
+    </ion-card-content>
 
-    <ion-item *ngFor="let reporte of reportes">
-      <ion-label>
-        <h2>Auto Reportado: {{ reporte.patente }}</h2>
-        <p>Descripción: {{ reporte.descripcion }}</p>
-        <p *ngIf="reporte.direccion">Visto en: {{ reporte.direccion }}</p>
-        <p *ngIf="reporte.foto">Foto: {{ reporte.foto }}</p>
-        <p *ngIf="reporte.status === 'Robado'">Estado: Robado</p>
-        <p *ngIf="reporte.status === 'Recuperado'">Estado: Recuperado</p>
-      </ion-label>
+    <ion-list *ngIf="obtenerNotificaciones(reporte).length > 0">
+      <ion-list-header>
+        <ion-label>Notificaciones Recibidas</ion-label>
+      </ion-list-header>
+      <ion-item *ngFor="let notificacion of obtenerNotificaciones(reporte)">
+        <ion-label>
+          <h3>{{ notificacion.mensaje }}</h3>
+          <p>Visto en: {{ notificacion.direccion }}</p>
+          <p *ngIf="notificacion.foto">Foto: {{ notificacion.foto }}</p>
+        </ion-label>
+      </ion-item>
+    </ion-list>
 
-      <ion-list *ngIf="obtenerNotificaciones(reporte).length > 0">
-        <ion-list-header>
-          <ion-label>Notificaciones Recibidas</ion-label>
-        </ion-list-header>
-        <ion-item *ngFor="let notificacion of obtenerNotificaciones(reporte)">
-          <ion-label>
-            <h3>{{ notificacion.mensaje }}</h3>
-            <p>Visto en: {{ notificacion.direccion }}</p>
-            <p *ngIf="notificacion.foto">Foto: {{ notificacion.foto }}</p>
-          </ion-label>
-        </ion-item>
-      </ion-list>
+    <ion-button *ngIf="reporte.status === 'Robado'" (click)="marcarRecuperado(reporte.id)">
+      Marcar como Recuperado
+    </ion-button>
+  </ion-card>
 
-      <ion-button *ngIf="reporte.status === 'Robado'" (click)="marcarRecuperado(reporte.id)">
-        Marcar como Recuperado
-      </ion-button>
-    </ion-item>
-  </ion-list>
+  <!-- Botón para borrar autos reportados y notificaciones -->
+  <ion-button expand="block" color="danger" (click)="borrarAutosYNotificaciones()">
+    Borrar Autos Reportados y Notificaciones
+  </ion-button>
 </ion-content>
