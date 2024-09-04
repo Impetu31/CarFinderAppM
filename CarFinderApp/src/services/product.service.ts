@@ -66,4 +66,10 @@ export class ProductService {
   private saveToLocalStorage() {
     localStorage.setItem('products', JSON.stringify(this.products));
   }
+  existeCorreo(email: string): boolean {
+    const users = JSON.parse(localStorage.getItem('users') || '[]');
+    return users.some((user: any) => user.email === email);
+  }
+  
+
 }

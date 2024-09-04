@@ -1,28 +1,42 @@
 <ion-header [translucent]="true">
-  <ion-toolbar>
+  <ion-toolbar color="primary">
     <ion-title>
-      CarFinder
+      HOME
     </ion-title>
   </ion-toolbar>
 </ion-header>
 
 <ion-content [fullscreen]="true">
-  <ion-header collapse="condense">
-    <ion-toolbar>
-      <ion-title size="large">CarFinder</ion-title>
-    </ion-toolbar>
-  </ion-header>
+  
 
   <div id="container" class="ion-text-center ion-padding">
     <img src="assets/img/logo.jfif" alt="CarFinder Logo" width="200" height="200">
+
+    <!-- Añadir descripción del producto -->
     <h1>Bienvenido a CarFinder</h1>
-    <p>Encuentra y reporta vehículos robados fácilmente.</p>
-    
-    <ion-button expand="full" color="primary" routerLink="/registro">
-      Regístrate
-    </ion-button>
-    <ion-button expand="full" color="secondary" routerLink="/login">
-      Inicia Sesión
-    </ion-button>
+    <p>Descubre y reporta autos robados en tiempo real. ¡Mantente seguro y ayuda a la comunidad!</p>
+
+    <!-- Nueva sección de beneficios -->
+    <div class="marketing-section">
+      <ion-card>
+        <ion-card-header>
+          <ion-card-title>¿Por qué usar CarFinder?</ion-card-title>
+        </ion-card-header>
+        <ion-card-content>
+          <ul>
+            <li>Reporta autos robados fácilmente.</li>
+            <li>Recibe notificaciones cuando alguien vea tu auto.</li>
+            <li>Contribuye a la seguridad de tu ciudad.</li>
+          </ul>
+        </ion-card-content>
+      </ion-card>
+
+      <ion-button expand="full" color="secondary" routerLink="/registro">
+        Regístrate Ahora
+      </ion-button>
+      <ion-button expand="full" color="primary" routerLink="/login">
+        Inicia Sesión
+      </ion-button>
+    </div>
   </div>
 </ion-content>

@@ -1,5 +1,6 @@
 import { Component } from '@angular/core';
 import { Router } from '@angular/router';
+import { ProductService } from 'src/services/product.service'; // Asegúrate de tener el servicio
 
 @Component({
   selector: 'app-registro',
@@ -12,11 +13,16 @@ export class RegistroPage {
   password: string = '';
   confirmPassword: string = '';
 
-  constructor(private router: Router) {}
+  constructor(private router: Router, private productService: ProductService) {}
 
   register() {
     if (this.password !== this.confirmPassword) {
       alert("Las contraseñas no coinciden.");
+      return;
+    }
+
+    if (this.productService.existeCorreo(this.email)) {
+      alert("Este correo ya está registrado.");
       return;
     }
 
