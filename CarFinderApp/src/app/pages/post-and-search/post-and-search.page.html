@@ -53,11 +53,10 @@
 
       <ion-item>
         <ion-label position="floating">Foto</ion-label>
-        <ion-input type="file" accept="image/*" (change)="onFileSelected($event)" name="foto" required></ion-input>
+        <ion-input type="file" accept="image/*" (change)="onFileSelected($event)" name="foto"></ion-input>
       </ion-item>
 
       <ion-button expand="block" type="submit" [disabled]="!reportarForm.form.valid">Reportar</ion-button>
     </form>
   </div>
 </ion-content>
-

@@ -20,10 +20,20 @@ export class ProductService {
     return this.products.filter(product => product.userEmail === userEmail);
   }
 
-  add(product: Product) {
+  // Verificar si la patente ya existe
+  existePatente(patente: string): boolean {
+    return this.products.some(product => product.patente === patente.toUpperCase());
+  }
+
+  add(product: Product): boolean {
+    if (this.existePatente(product.patente)) {
+      return false; // La patente ya existe
+    }
     product.id = this.products.length + 1;
+    product.patente = product.patente.toUpperCase(); // Convertir a mayúsculas
     this.products.push(product);
     this.saveToLocalStorage();
+    return true; // Auto agregado con éxito
   }
 
   addNotificacion(productId: number, notificacion: Notificacion) {

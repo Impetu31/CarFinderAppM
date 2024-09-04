@@ -14,7 +14,7 @@ export class PostAndSearchPage {
   descripcion: string = '';
   direccion: string = '';
   foto: File | null = null;
-  autoReportado: Product | null = null;
+  autoReportado: Product | null = null; // Inicializamos con null
   loggedInUser: any;
 
   constructor(private router: Router, private productService: ProductService) {
@@ -26,7 +26,8 @@ export class PostAndSearchPage {
   }
 
   buscarAuto() {
-    this.autoReportado = this.productService.getAll().find((product: Product) => product.patente === this.patente) || null;
+    const result = this.productService.getAll().find((product: Product) => product.patente === this.patente.toUpperCase());
+    this.autoReportado = result || null;  // Asigna null si no se encuentra el auto
 
     if (this.autoReportado && this.autoReportado.status === 'Robado') {
       alert('Este auto está reportado como robado. Proporcione más información.');
@@ -66,7 +67,12 @@ export class PostAndSearchPage {
       notificaciones: []
     };
 
-    this.productService.add(newProduct);
-    alert('Auto reportado con éxito.');
+    // Verificar si la patente ya existe
+    const agregado = this.productService.add(newProduct);
+    if (!agregado) {
+      alert('Este auto ya ha sido reportado.');
+    } else {
+      alert('Auto reportado con éxito.');
+    }
   }
 }
