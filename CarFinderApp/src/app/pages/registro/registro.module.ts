@@ -6,7 +6,7 @@ import { IonicModule } from '@ionic/angular';
 
 import { RegistroPageRoutingModule } from './registro-routing.module';
 
-import { RegistroPage } from './registro.page';
+import { RegistroPage } from './registro.page';  // Asegúrate de que el nombre es "RegistroPage"
 
 @NgModule({
   imports: [
@@ -15,6 +15,6 @@ import { RegistroPage } from './registro.page';
     IonicModule,
     RegistroPageRoutingModule
   ],
-  declarations: [RegistroPage]
+  declarations: [RegistroPage]  // Cambié "RegistroPage" para consistencia
 })
 export class RegistroPageModule {}

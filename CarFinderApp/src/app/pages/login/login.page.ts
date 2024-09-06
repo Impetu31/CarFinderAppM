@@ -1,5 +1,6 @@
 import { Component } from '@angular/core';
 import { Router } from '@angular/router';
+import { AuthService } from 'src/services/auth.service';
 
 @Component({
   selector: 'app-login',
@@ -9,20 +10,15 @@ import { Router } from '@angular/router';
 export class LoginPage {
   email: string = '';
   password: string = '';
+  errorMessage: string = '';
 
-  constructor(private router: Router) {}
+  constructor(private authService: AuthService, private router: Router) {}
 
   login() {
-    const users = JSON.parse(localStorage.getItem('users') || '[]');
-    const user = users.find((u: any) => u.email === this.email && u.password === this.password);
-
-    if (user) {
-      // Guardar el usuario conectado
-      localStorage.setItem('loggedInUser', JSON.stringify(user));
-      // Redirigir a la página de post-and-search
-      this.router.navigate(['/post-and-search']);
+    if (this.authService.login(this.email, this.password)) {
+      this.router.navigate(['/post-and-search']);  // Cambiado para redirigir a post-and-search
     } else {
-      alert("Correo o contraseña incorrectos.");
+      this.errorMessage = 'Invalid email or password.';
     }
   }
 }
